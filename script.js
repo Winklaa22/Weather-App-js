@@ -10,14 +10,12 @@ let weatherInfoContent = null;
 
 searchButton.addEventListener('click', function() {
     onButtonClicked();
-   
   });
 
 
 function onButtonClicked(){
 
     if(searchInput.value == ""){
-        alert("wpisz coś kurwa");
         return;
     }
         
@@ -28,69 +26,102 @@ function onButtonClicked(){
     .then(response => response.json()).then(json => {
         
         if(json.cod == "404"){
-            OpenBox()
+            OpenErrorBox();
             errorPanel.style.opacity = "1";
             contentSelector.style.opacity = "0";
             return;
         }
-            
-        errorPanel.style.opacity = "0";
-        const image = document.getElementById('weather-image');
-        const desc = document.querySelector('.weather-desc')
-        const temp = document.querySelector(".weather-degrees");
 
-        switch(json.weather[0].main){
-            case 'Thunderstorm':
-                image.src = "weather-icons/rain_thunder.png"
-                break;
-
-            case 'Snow':
-                image.src = "weather-icons/day_snow.png"
-                break;
-                
-            case 'Rain':
-                image.src = "weather-icons/day_rain.png"
-                break;
-
-            case 'Clouds':
-                image.src = "weather-icons/day_partial_cloud.png";
-                break;
-
-            case 'Clear':
-                image.src = "weather-icons/day_clear.png";
-                break;
-
-            case 'Mist':
-                image.src = "weather-icons/mist.png";
-                break;
-            
-            case 'Fog':
-                image.src = "weather-icons/fog.png"
-                break;
-            
-        }
-
-        temp.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
-        desc.innerHTML = `${json.weather[0].description}`;
-
+        OpenInfoBox();
         if(!isOpened){
-            OpenBox();
             contentSelector.style.opacity = '1';
             cityText.innerHTML = document.getElementById("searchInput").value;
+            ShowTheWeather(json);
+            isOpened = true;
         }
         else{
             contentSelector.style.opacity = '0';
             setTimeout(()=>{
+                ShowTheWeather(json);
                 contentSelector.style.opacity = '1';
                 cityText.innerHTML = document.getElementById("searchInput").value;
-            }, 100)
+            }, 150)
         }
-        isOpened =! isOpened;
+
+            
+        errorPanel.style.opacity = "0";
+
+
+
     });
 }
 
-function OpenBox(){
+function ShowTheWeather(json){
+    const image = document.getElementById('weather-image');
+    const desc = document.querySelector('.weather-desc')
+    const temp = document.querySelector(".weather-degrees");
+    switch(json.weather[0].main){
+        case 'Thunderstorm':
+            image.src = "weather-icons/rain_thunder.png"
+            break;
+
+        case 'Snow':
+            image.src = "weather-icons/day_snow.png"
+            break;
+            
+        case 'Rain':
+            image.src = "weather-icons/day_rain.png"
+            break;
+
+        case 'Clouds':
+            image.src = "weather-icons/day_partial_cloud.png";
+            break;
+
+        case 'Clear':
+            image.src = "weather-icons/day_clear.png";
+            break;
+
+        case 'Mist':
+            image.src = "weather-icons/mist.png";
+            break;
+        
+        case 'Fog':
+            image.src = "weather-icons/fog.png"
+            break;
+        
+    }
+
+    temp.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
+    desc.innerHTML = `${json.weather[0].description}`;
+}
+
+function OpenInfoBox(){
+    const width = getComputedStyle(boxSelector).getPropertyValue("--weather-info-width");
+    const height = getComputedStyle(boxSelector).getPropertyValue("--weather-info-height");
+
+    OpenBox(new BoxState(width, height))
+}
+
+function OpenErrorBox(){
+    const width = getComputedStyle(boxSelector).getPropertyValue("--error-box-width");
+    const height = getComputedStyle(boxSelector).getPropertyValue("--error-box-height");
+
+    OpenBox(new BoxState(width, height))
+}
+
+function OpenBox(state){
     searchInput.style.height = '30px';
-    boxSelector.style.height = '450px';
-    boxSelector.style.width = "400px"
+    boxSelector.style.height = state.height;
+    boxSelector.style.width = state.width;
+}   
+
+
+class BoxState{
+
+    constructor(width, height){
+        this.height = height;
+        this.width = width;
+    }
+
+
 }

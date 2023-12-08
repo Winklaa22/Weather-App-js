@@ -3,6 +3,10 @@
     --background-color: #6369d1;
     --box-color: #60e1e128;
     --box-border-color: #D8D2E1;
+    --weather-info-width: 500px;
+    --weather-info-height: 450px;
+    --error-box-width: 400px;
+    --error-box-height: 450px;
 }
 
 body{   
@@ -37,7 +41,7 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .search-btn{
@@ -45,14 +49,12 @@ body{
     width: 30px;
     border-radius: 10px;
     background-color: #D8D2E1;
+    margin-right: 15x   px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: .5s ease-in-out;
-}
-
-button {
-	background: none;
+    background: none;
 	color: inherit;
 	border: none;
 	padding: 0;
@@ -66,24 +68,22 @@ button {
     cursor: pointer;
 }
 
-.city-input{
-    margin-right: 8px;
+input[type="text"]{
+    margin-left: 30px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.295);
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
     height: 50px;
-    width: 80%;
+    width: 85%;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     transition: all 0.6s ease;
 }
 
-input[type="text"]{
-    box-sizing: border-box;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-image: url('searchicon.png');
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
 
-}
 
 .content{
     height: auto;
